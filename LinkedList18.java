@@ -5,29 +5,26 @@ import java.util.*;
 import java.lang.*;
 import java.io.*;
 
-public class LinkedList16 {
+public class LinkedList18 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        LL16 list = new LL16();
+        LL18 list = new LL18();
         list.insertFirst(1);
         list.insertFirst(2);
-        list.insertFirst(3);
-        list.insertFirst(4);
-        list.insertLast(0);
+        list.insertFirst(2);
+        list.insertFirst(1);
         list.display();
-        list.makeLoop(list.head,list.tail);
-        System.out.println(list.isCircular(list.head));
 
-
+        System.out.println("Given linked list is palindrome :" + list.isPalindrome(list.head));
     }
 }
 
-class LL16{
+class LL18{
     Node head;
     Node tail;
     private int size;
 
-    public LL16(){
+    public LL18(){
         this.size = 0;
     }
 
@@ -54,6 +51,7 @@ class LL16{
         size++;
     }
 
+
     public void display(){
         Node temp = head;
         while (temp != null) {
@@ -77,20 +75,41 @@ class LL16{
         }
     }
 
-    public void makeLoop(Node head,Node tail){
-        Node curr = head;
-        tail.next = curr;
+    boolean isPalindrome(Node head)
+    {
+        //Your code here
+        Node mid = findMid(head);
+        Node head2 = reverse(mid);
+        while(head2 != null){
+            if(head.value != head2.value){
+                return false;
+            }
+            head = head.next;
+            head2 = head2.next;
+        }
+        return true;
     }
 
-    boolean isCircular(Node head)
-    {
-        Node a = head, b = head;
+    Node reverse(Node mid){
+        Node prev = null;
+        Node curr = mid;
+        Node temp = null;
+        while(curr != null ){
+            temp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = temp;
+        }
+        return prev;
+    }
 
-        while (b != null && b.next != null)
-            if ((a = a.next) == (b = b.next.next))
-                return true;
-
-        return false;
+    Node findMid(Node head){
+        Node fast=head, slow = head;
+        while(fast != null && fast.next != null){
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        return slow;
     }
 }
 
